@@ -9,6 +9,7 @@ const ramenRating = document.querySelector('#rating-display')
 const ramenComment = document.querySelector('#comment-display')
 const ramenForm = document.querySelector('#new-ramen')
 const updateForm = document.querySelector('#edit-ramen')
+const deleteButton = document.querySelector('#delete-button')
 
 
 
@@ -40,11 +41,11 @@ const appendRamen = (ramenObj) => {
   ramenDiv.addEventListener('click', () => {
     renderRamen(ramenObj)
     currentId = ramenObj.id
+    currentRamen = ramenObj
   })
 
   ramenMenu.append(ramenDiv)
 
-  currentRamen = ramenObj;
 }
 
 
@@ -116,8 +117,33 @@ const updateRamen = () => {
   })
 }
 
+// //function to remove ramen from top and photo
+// const removeRamen = () => {
+//   let ramenDiv = document.querySelector(`#ramen-menu img[src=${currentRamen.image}`)
+//   if (ramenDiv) {
+//     ramenDiv.remove();
+//   }
+//   // imgToDelete.remove();
+// }
+
+//function to delete ramen with fetch
+const deleteRamen = () => {
+  deleteButton.addEventListener('click', () => {
+    // removeRamen()
+    fetch(`http://localhost:3000/ramens/${currentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(resp => resp.json())
+    .catch(error => alert(error))
+  })
+}
+
 //call functions
 loadRamen();
 formEventListener();
 updateRamen();
+deleteRamen();
 })
